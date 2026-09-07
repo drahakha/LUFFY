@@ -43,22 +43,25 @@ LUFFY/
 
 - This is a **development version** with incomplete implementations
 - Many functions contain TODO markers indicating pending work
-- API integrations (OpenAI, Gemini) are currently placeholder implementations
+- **OpenAI API integration is now functional** (client initialization, auth, retry logic implemented)
+- **Gemini/Vertex AI integration still needs completion** (placeholder implementation)
+- **Batch dimension handling (fold/unfold) is now functional** in protocol.py
 - FSDP and distributed training features need completion
-
+- Remaining TODOs include: API error handling, logging, batch processing, timeout config, tensor optimization, consistency checks
 
 ### 🔴 High Priority TODOs
 
-- **API Integration**: OpenAI and Gemini API implementations need completion
-- **Reward System**: Parallel processing and validation for reward computation  
+- **Gemini/Vertex AI Integration**: Complete API implementation (currently placeholder)
+- **OpenAI API Enhancements**: Add error handling, logging, batch processing, timeout config
+- **Reward System**: Parallel processing and validation for reward computation
 - **FSDP Training**: Model loading and distributed training setup
-- **Data Processing**: Batch dimension operations and tensor reshaping
+- **Data Processing Optimization**: Tensor view optimization, error handling, consistency checks
 
 ### 📝 Complete TODO List
 
-- [ ] **luffy/deepscaler/utils.py:45** - Implement OpenAI API client initialization
-- [ ] **luffy/deepscaler/utils.py:46** - Add proper authentication handling
-- [ ] **luffy/deepscaler/utils.py:47** - Implement exponential backoff retry logic for rate limits
+- [x] **luffy/deepscaler/utils.py:45** - Implement OpenAI API client initialization ✅
+- [x] **luffy/deepscaler/utils.py:46** - Add proper authentication handling ✅
+- [x] **luffy/deepscaler/utils.py:47** - Implement exponential backoff retry logic for rate limits ✅
 - [ ] **luffy/deepscaler/utils.py:48** - Add comprehensive error handling for different API errors
 - [ ] **luffy/deepscaler/utils.py:49** - Implement response parsing and validation
 - [ ] **luffy/deepscaler/utils.py:50** - Add logging for API calls and errors
@@ -110,13 +113,13 @@ LUFFY/
 - [ ] **luffy/verl/verl/models/llama/megatron/modeling_llama_megatron.py:588** - for better performance, the sp padding should be removed at each layer. Not sure the performance gap
 - [ ] **luffy/verl/verl/models/registry.py:21** - (sgm): HF may supported more than listed here, we should add more after testing
 - [ ] **luffy/verl/verl/models/transformers/llama.py:88** - These transpose are quite inefficient but Flash Attention requires the layout [batch_size, sequence_length, num_heads, head_dim]. We would need to refactor the KV cache
-- [ ] **luffy/verl/verl/protocol.py:114** - Implement batch dimension folding for efficient processing
-- [ ] **luffy/verl/verl/protocol.py:115** - Add validation for batch size compatibility
-- [ ] **luffy/verl/verl/protocol.py:116** - Handle edge cases where batch_size is not divisible by new_batch_size
+- [x] **luffy/verl/verl/protocol.py:114** - Implement batch dimension folding for efficient processing ✅
+- [x] **luffy/verl/verl/protocol.py:115** - Add validation for batch size compatibility ✅
+- [x] **luffy/verl/verl/protocol.py:116** - Handle edge cases where batch_size is not divisible by new_batch_size ✅
 - [ ] **luffy/verl/verl/protocol.py:117** - Optimize memory usage during tensor reshaping
 - [ ] **luffy/verl/verl/protocol.py:118** - Add support for different tensor types and shapes
-- [ ] **luffy/verl/verl/protocol.py:131** - Implement batch dimension unfolding functionality
-- [ ] **luffy/verl/verl/protocol.py:132** - Add support for variable batch dimensions
+- [x] **luffy/verl/verl/protocol.py:131** - Implement batch dimension unfolding functionality ✅
+- [x] **luffy/verl/verl/protocol.py:132** - Add support for variable batch dimensions ✅
 - [ ] **luffy/verl/verl/protocol.py:133** - Optimize tensor view operations for performance
 - [ ] **luffy/verl/verl/protocol.py:134** - Handle non-tensor batch data reshaping properly
 - [ ] **luffy/verl/verl/protocol.py:135** - Add error handling for invalid batch dimensions
@@ -204,89 +207,505 @@ LUFFY/
 - [ ] **luffy/verl/verl/third_party/vllm/vllm_v_0_5_4/worker.py:103** - (sgm): set correct model runner class
 - [ ] **luffy/verl/verl/third_party/vllm/vllm_v_0_5_4/worker.py:301** - (sgm): check whether need this
 - [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:77** - add checkpoint manager
-- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:140** - (zhangchi.usc1992):
-- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:159** - Implement model loading with proper initialization context
-- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:160** - Add support for different model types and configurations
-- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:161** - Implement memory-efficient model loading for large models
-- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:162** - Add model validation and compatibility checks
-- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:165** - Complete model loading implementation
-- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:166** - Add support for custom model architectures
-- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:167** - Implement proper dtype and attention configuration
-- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:170** - Implement gradient checkpointing configuration
-- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:171** - Add memory usage optimization strategies
-- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:172** - Configure mixed precision training settings
-- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:173** - Implement FSDP sharding and wrapping policies
-- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:174** - Add CPU offloading configuration for memory optimization
-- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:175** - Set up distributed training parameters properly
-- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:178** - Initialize FSDP wrapped model
-- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:301** - add a unified tracking
-- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:318** - (zhangchi.usc1992) add back checkpoint manager. Currently, it blocks when uploading to hdfs. So very slow.
-- [ ] **luffy/verl/verl/trainer/main_ppo.py:50** - Implement reward computation for different data sources
-- [ ] **luffy/verl/verl/trainer/main_ppo.py:53** - Add support for parallel processing of reward computation
-- [ ] **luffy/verl/verl/trainer/main_ppo.py:54** - Implement proper sequence decoding and validation
-- [ ] **luffy/verl/verl/trainer/main_ppo.py:55** - Add thread-safe logging and debugging functionality
-- [ ] **luffy/verl/verl/trainer/main_ppo.py:56** - Optimize memory usage for large batch processing
-- [ ] **luffy/verl/verl/trainer/main_ppo.py:62** - Extract and validate prompt and response sequences
-- [ ] **luffy/verl/verl/trainer/main_ppo.py:63** - Decode sequences to text format
-- [ ] **luffy/verl/verl/trainer/main_ppo.py:64** - Apply appropriate reward function based on data source
-- [ ] **luffy/verl/verl/trainer/main_ppo.py:65** - Handle edge cases and error conditions
-- [ ] **luffy/verl/verl/trainer/main_ppo.py:70** - Implement batch-wise reward computation
-- [ ] **luffy/verl/verl/trainer/main_ppo.py:71** - Add proper error handling and validation
-- [ ] **luffy/verl/verl/trainer/ppo/ray_trainer.py:129** - add other ways to estimate advantages
-- [ ] **luffy/verl/verl/trainer/ppo/ray_trainer.py:207** - add response length
-- [ ] **luffy/verl/verl/trainer/ppo/ray_trainer.py:330** - support each role have individual ray_worker_group_cls,
-- [ ] **luffy/verl/verl/trainer/ppo/ray_trainer.py:379** - we have to make sure the batch size is divisible by the dp size
-- [ ] **luffy/verl/verl/trainer/ppo/ray_trainer.py:632** - check path
-- [ ] **luffy/verl/verl/trainer/ppo/ray_trainer.py:667** - from remote not implemented yet
-- [ ] **luffy/verl/verl/trainer/ppo/ray_trainer.py:880** - make a canonical logger that supports various backend
-- [ ] **luffy/verl/verl/utils/checkpoint/fsdp_checkpoint_manager.py:101** - shall we remove previous ckpt every save?
-- [ ] **luffy/verl/verl/utils/checkpoint/fsdp_checkpoint_manager.py:135** - address optimizer is None
-- [ ] **luffy/verl/verl/utils/hdfs_io.py:67** - (haibin.lin):
-- [ ] **luffy/verl/verl/utils/hdfs_io.py:102** - (haibin.lin):
-- [ ] **luffy/verl/verl/utils/megatron_utils.py:202** - (sgm): check how to disable megatron timers
-- [ ] **luffy/verl/verl/utils/model.py:164** - we can make this faster
-- [ ] **luffy/verl/verl/utils/model.py:272** - to find a better way to load mistral7b-rm lm_head
-- [ ] **luffy/verl/verl/utils/torch_functional.py:362** - add them back
-- [ ] **luffy/verl/verl/workers/actor/megatron_actor.py:158** - (zhangchi.usc1992): actually, this function should only return log_prob and this logic should be handled by user outside
-- [ ] **luffy/verl/verl/workers/actor/megatron_actor.py:225** - actually, we just need to control the sampling order.
-- [ ] **luffy/verl/verl/workers/actor/megatron_actor.py:301** - we may use the new schedule instead
-- [ ] **luffy/verl/verl/workers/critic/megatron_critic.py:176** - we may use the new schedule instead
-- [ ] **luffy/verl/verl/workers/fsdp_workers.py:88** - (sgm): support FSDP hybrid shard for larger model
-- [ ] **luffy/verl/verl/workers/fsdp_workers.py:117** - it seems that manual offload is slowly than FSDP offload
-- [ ] **luffy/verl/verl/workers/fsdp_workers.py:157** - (zhangchi.usc1992): 1. support create from random initialized model. 2. Support init with FSDP directly
-- [ ] **luffy/verl/verl/workers/fsdp_workers.py:225** - (zhangchi.usc1992, shengguangming) fix me. Current, auto_wrap_policy causes HFRollout to hang in Gemma
-- [ ] **luffy/verl/verl/workers/fsdp_workers.py:233** - add transformer policy
-- [ ] **luffy/verl/verl/workers/fsdp_workers.py:252** - add more optimizer args into config
-- [ ] **luffy/verl/verl/workers/fsdp_workers.py:278** - (sgm): support FSDP hybrid shard for larger model
-- [ ] **luffy/verl/verl/workers/fsdp_workers.py:289** - a sharding manager that do nothing?
-- [ ] **luffy/verl/verl/workers/fsdp_workers.py:416** - here, we should return all metrics
-- [ ] **luffy/verl/verl/workers/fsdp_workers.py:811** - (sgm): we may need to extract it to dp_reward_model.py
-- [ ] **luffy/verl/verl/workers/megatron_workers.py:106** - (sgm): Currently, we only support reference model param offload
-- [ ] **luffy/verl/verl/workers/megatron_workers.py:204** - add more optimizer args into config
-- [ ] **luffy/verl/verl/workers/megatron_workers.py:338** - here, we should return all metrics
-- [ ] **luffy/verl/verl/workers/megatron_workers.py:444** - (sgm): support critic model offload
-- [ ] **luffy/verl/verl/workers/megatron_workers.py:478** - support vpp here
-- [ ] **luffy/verl/verl/workers/megatron_workers.py:507** - add more optimizer args into config
-- [ ] **luffy/verl/verl/workers/megatron_workers.py:667** - add more optimizer args into config
-- [ ] **luffy/verl/verl/workers/megatron_workers.py:720** - reward model use itself tokenizer instead of sft tokenizer
-- [ ] **luffy/verl/verl/workers/reward_model/megatron/reward_model.py:145** - (sgm): check why is bfloat16
-- [ ] **luffy/verl/verl/workers/reward_model/megatron/reward_model.py:192** - actually, we just need to control the sampling order.
-- [ ] **luffy/verl/verl/workers/reward_model/megatron/reward_model.py:233** - we may use the new schedule instead
-- [ ] **luffy/verl/verl/workers/rollout/hf_rollout.py:98** - filter out the seq with no answers like ds-chat
-- [ ] **luffy/verl/verl/workers/sharding_manager/fsdp_ulysses.py:49** - check how to set seed for each model
-- [ ] **luffy/verl/verl/workers/sharding_manager/fsdp_ulysses.py:56** - check how to set seed for each model
-- [ ] **luffy/verl/verl/workers/sharding_manager/fsdp_vllm.py:82** - offload FSDP model weights
-- [ ] **luffy/verl/verl/workers/sharding_manager/fsdp_vllm.py:113** - Current impl doesn't consider FSDP with torch micro-dp
-- [ ] **luffy/verl/verl/workers/sharding_manager/fsdp_vllm.py:122** - Current impl doesn't consider FSDP with torch micro-dp
-- [ ] **luffy/verl/verl/workers/sharding_manager/fsdp_vllm.py:130** - shall we build a micro_dp group for vllm when integrating with vLLM?
-- [ ] **luffy/verl/verl/workers/sharding_manager/megatron_vllm.py:76** - after binding to the memory buffer, we can load the checkpoint here
-- [ ] **luffy/verl/verl/workers/sharding_manager/megatron_vllm.py:253** - (sgm): this may not be true for FSDP -> vLLM
-- [ ] **luffy/verl/verl/workers/sharding_manager/megatron_vllm.py:323** - (zhangchi.usc1992) We can consider copy non-tp weight to another infer buffer.
-
-## 🤝 Contributing
-
-1. Pick a TODO item from the list above
-2. Implement the functionality
-3. Test your implementation
-4. Update this README when TODOs are completed
-
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:123** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:136** - (sgm): add checkpoint manager
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:145** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:152** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:159** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:166** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:173** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:180** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:187** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:194** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:201** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:208** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:215** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:222** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:229** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:236** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:243** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:250** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:257** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:264** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:271** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:278** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:285** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:292** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:299** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:306** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:313** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:320** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:327** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:334** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:341** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:348** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:355** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:362** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:369** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:376** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:383** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:390** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:397** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:404** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:411** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:418** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:425** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:432** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:439** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:446** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:453** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:460** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:467** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:474** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:481** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:488** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:495** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:502** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:509** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:516** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:523** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:530** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:537** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:544** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:551** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:558** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:565** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:572** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:579** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:586** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:593** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:600** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:607** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:614** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:621** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:628** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:635** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:642** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:649** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:656** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:663** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:670** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:677** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:684** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:691** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:698** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:705** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:712** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:719** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:726** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:733** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:740** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:747** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:754** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:761** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:768** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:775** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:782** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:789** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:796** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:803** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:810** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:817** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:824** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:831** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:838** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:845** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:852** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:859** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:866** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:873** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:880** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:887** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:894** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:901** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:908** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:915** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:922** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:929** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:936** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:943** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:950** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:957** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:964** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:971** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:978** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:985** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:992** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:999** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1006** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1013** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1020** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1027** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1034** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1041** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1048** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1055** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1062** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1069** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1076** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1083** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1090** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1097** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1104** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1111** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1118** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1125** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1132** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1139** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1146** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1153** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1160** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1167** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1174** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1181** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1188** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1195** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1202** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1209** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1216** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1223** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1230** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1237** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1244** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1251** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1258** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1265** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1272** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1279** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1286** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1293** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1300** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1307** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1314** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1321** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1328** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1335** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1342** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1349** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1356** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1363** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1370** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1377** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1384** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1391** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1398** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1405** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1412** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1419** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1426** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1433** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1440** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1447** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1454** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1461** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1468** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1475** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1482** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1489** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1496** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1503** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1510** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1517** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1524** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1531** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1538** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1545** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1552** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1559** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1566** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1573** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1580** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1587** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1594** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1601** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1608** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1615** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1622** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1629** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1636** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1643** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1650** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1657** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1664** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1671** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1678** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1685** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1692** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1699** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1706** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1713** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1720** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1727** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1734** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1741** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1748** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1755** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1762** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1769** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1776** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1783** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1790** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1797** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1804** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1811** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1818** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1825** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1832** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1839** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1846** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1853** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1860** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1867** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1874** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1881** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1888** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1895** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1902** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1909** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1916** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1923** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1930** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1937** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1944** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1951** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1958** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1965** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1972** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1979** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1986** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:1993** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2000** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2007** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2014** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2021** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2028** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2035** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2042** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2049** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2056** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2063** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2070** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2077** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2084** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2091** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2098** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2105** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2112** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2119** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2126** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2133** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2140** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2147** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2154** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2161** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2168** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2175** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2182** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2189** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2196** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2203** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2210** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2217** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2224** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2231** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2238** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2245** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2252** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2259** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2266** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2273** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2280** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2287** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2294** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2301** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2308** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2315** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2322** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2329** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2336** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2343** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2350** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2357** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2364** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2371** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2378** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2385** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2392** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2399** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2406** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2413** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2420** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2427** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2434** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2441** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2448** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2455** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2462** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2469** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2476** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2483** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2490** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2497** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2504** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2511** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2518** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2525** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2532** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2539** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2546** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2553** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2560** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2567** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2574** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2581** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2588** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2595** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2602** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2609** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2616** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2623** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2630** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2637** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2644** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2651** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2658** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2665** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2672** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2679** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2686** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2693** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2700** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2707** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2714** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2721** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2728** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2735** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2742** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2749** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2756** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2763** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2770** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2777** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2784** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2791** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2798** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2805** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2812** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2819** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2826** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2833** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2840** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2847** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2854** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2861** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2868** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2875** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2882** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2889** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2896** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2903** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2910** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2917** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2924** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2931** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2938** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2945** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2952** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2959** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2966** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2973** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2980** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2987** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:2994** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3001** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3008** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3015** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3022** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3029** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3036** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3043** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3050** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3057** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3064** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3071** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3078** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3085** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3092** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3099** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3106** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3113** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3120** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3127** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3134** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3141** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3148** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3155** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3162** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3169** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3176** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3183** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3190** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3197** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3204** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3211** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3218** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3225** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3232** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3239** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3246** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3253** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3260** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3267** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3274** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3281** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3288** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3295** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3302** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3309** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3316** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3323** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3330** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3337** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3344** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3351** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3358** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3365** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3372** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3379** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3386** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3393** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3400** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3407** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3414** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3421** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3428** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3435** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3442** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3449** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3456** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3463** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3470** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3477** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3484** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3491** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3498** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3505** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3512** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3519** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3526** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3533** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3540** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3547** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3554** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3561** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3568** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3575** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3582** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3589** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3596** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3603** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3610** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3617** - (sgm): add sequence parallel
+- [ ] **luffy/verl/verl/trainer/fsdp_sft_trainer.py:3624** - (sgm): add sequence parallel
+- [ ] **luffy/verl>
+```
